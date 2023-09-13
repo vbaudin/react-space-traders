@@ -1,24 +1,70 @@
-import logo from "./logo.svg";
 import "./App.css";
+import { useEffect, useState } from "react";
 
-function App() {
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      symbol: "HaVlHs",
-      faction: "COSMIC",
-    }),
+const App = () => {
+  const [playerData, setPlayerData] = useState();
+
+  const generateRandomString = () => {
+    return Math.floor(Math.random() * Date.now()).toString(36);
   };
 
-  fetch("https://api.spacetraders.io/v2/register", options)
-    .then((response) => response.json())
-    .then((response) => console.log(response))
-    .catch((err) => console.error(err));
+  useEffect(() => {
+    const newPlayer = async () => {
+      const callsign = generateRandomString();
 
-  return <>Space Traders !</>;
-}
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          symbol: callsign,
+          faction: "COSMIC",
+        }),
+      };
+
+      const data = await fetch(
+        "https://api.spacetraders.io/v2/register",
+        options
+      )
+        .then((response) => response.json())
+        .then((response) => response)
+        .catch((err) => console.error(err));
+
+      return data;
+    };
+    const getPlayer = async () => {
+      if (localStorage.getItem("playerData") === null) {
+        console.log("On crée un nouveau player !");
+        const newPlayerData = await newPlayer(); // Supposons que newPlayer() renvoie un objet avec la structure { data: {...} }
+        localStorage.setItem("playerData", JSON.stringify(newPlayerData.data)); // Stockez l'objet complet dans localStorage.
+        setPlayerData(newPlayerData.data); // Extrayez l'objet sous la clé 'data' de l'objet stocké.
+      } else {
+        console.log("On récupère le player depuis localStorage");
+        const storedPlayerData = JSON.parse(localStorage.getItem("playerData")); // Récupérez l'objet complet depuis localStorage.
+        setPlayerData(storedPlayerData); // Extrayez l'objet sous la clé 'data' de l'objet stocké.
+      }
+    };
+    const fetchData = async () => {
+      await getPlayer();
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    console.log(playerData);
+  }, [playerData]);
+
+  return playerData ? (
+    <>
+      <div>Space Traders !</div>
+      <div>Credits : {playerData.agent.credits}</div>
+      <div>Headquarters : {playerData.agent.headquarters} </div>
+      <div>Faction : {playerData.faction.name} </div>
+    </>
+  ) : (
+    <>Loading...</>
+  );
+};
 
 export default App;
