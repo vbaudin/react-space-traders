@@ -1,5 +1,7 @@
 import "./App.css";
 import { useEffect, useState } from "react";
+import ActionButton from "./components/ActionButton/ActionButton";
+import Contracts from "./components/Contracts/Contracts";
 
 const App = () => {
   const [playerData, setPlayerData] = useState();
@@ -61,6 +63,29 @@ const App = () => {
       <div>Credits : {playerData.agent.credits}</div>
       <div>Headquarters : {playerData.agent.headquarters} </div>
       <div>Faction : {playerData.faction.name} </div>
+      <ActionButton
+        action={() => {
+          const options = {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + playerData.token,
+            },
+          };
+
+          fetch(
+            "https://api.spacetraders.io/v2/systems/" +
+              playerData.ship.nav.systemSymbol +
+              "/waypoints/" +
+              playerData.ship.nav.waypointSymbol,
+            options
+          )
+            .then((response) => response.json())
+            .then((response) => console.log(response.data))
+            .catch((err) => console.error(err));
+        }}
+        name="View Ship[0] Location"
+      />
+      <Contracts contracts={playerData.contract} />
     </>
   ) : (
     <>Loading...</>
