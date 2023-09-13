@@ -1,4 +1,6 @@
-const Contracts = ({ contracts }) => {
+import ActionButton from "../ActionButton/ActionButton";
+
+const Contracts = ({ contracts, token, setPlayerData }) => {
   const formatingDate = (inputDate) => {
     const date = new Date(inputDate);
 
@@ -12,6 +14,26 @@ const Contracts = ({ contracts }) => {
     });
 
     return formattedDate;
+  };
+
+  const refreshPlayerData = async () => {
+    const options = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    };
+
+    const updatedData = await fetch(
+      "https://api.spacetraders.io/v2/my/agent",
+      options
+    )
+      .then((response) => response.json())
+      .then((response) => console.log(response))
+      .catch((err) => console.error(err));
+
+    console.log("updatedData", updatedData);
+    setPlayerData(updatedData);
   };
 
   return (
@@ -34,6 +56,30 @@ const Contracts = ({ contracts }) => {
       <div>Payment</div>
       <div>On Accepted : {contracts.terms.payment.onAccepted} </div>
       <div>On Fulfilled : {contracts.terms.payment.onFulfilled} </div>
+      <ActionButton
+        name="Accept Mission"
+        action={() => {
+          const options = {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          };
+
+          fetch(
+            "https://api.spacetraders.io/v2/my/contracts/" +
+              contracts.id +
+              "/accept",
+            options
+          )
+            .then((response) => response.json())
+            .then((response) => console.log(response))
+            .catch((err) => console.error(err));
+
+          refreshPlayerData();
+        }}
+      />
     </>
   );
 };

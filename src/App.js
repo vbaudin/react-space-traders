@@ -85,7 +85,11 @@ const App = () => {
         }}
         name="View Ship[0] Location"
       />
-      <Contracts contracts={playerData.contract} />
+      <Contracts
+        contracts={playerData.contract}
+        token={playerData.token}
+        setPlayerData={setPlayerData}
+      />
     </>
   ) : (
     <>Loading...</>
