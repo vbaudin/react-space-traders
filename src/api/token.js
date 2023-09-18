@@ -25,14 +25,15 @@ export const createNewToken = async (
     const {
       data: { data },
     } = await axios.request(options);
-    console.log(data);
+    // console.log(data);
     const { token, agent, contract, ship } = data;
     const contracts = [contract];
+    const fleet = [ship];
 
     localStorage.setItem("agentToken", token);
     localStorage.setItem("agentData", JSON.stringify(agent));
     localStorage.setItem("contractsData", JSON.stringify(contracts));
-    localStorage.setItem("fleetData", JSON.stringify(ship));
+    localStorage.setItem("fleetData", JSON.stringify(fleet));
     setToken(token);
   } catch (error) {
     console.error(error);

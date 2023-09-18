@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const getAgentData = async (token, setAgent) => {
+export const getAgentData = async (token) => {
   const options = {
     method: "GET",
     url: "https://api.spacetraders.io/v2/my/agent",
@@ -10,13 +10,21 @@ export const getAgentData = async (token, setAgent) => {
   try {
     const { data } = await axios.request(options);
     const { credits, headquarters, startingFaction, symbol } = data.data;
-    setAgent({
-      credits,
-      headquarters,
-      startingFaction,
-      symbol,
-    });
   } catch (error) {
     console.error(error);
   }
+};
+
+export const updateAgentCredits = async (setAgent, creditsToAdd) => {
+  const storedAgentData = JSON.parse(localStorage.getItem("agentData"));
+
+  const { credits, ...otherAgentDatas } = storedAgentData;
+
+  const newCredits = credits + creditsToAdd;
+
+  const newAgentData = { ...otherAgentDatas, credits: newCredits };
+
+  localStorage.setItem("agentData", JSON.stringify(newAgentData));
+
+  setAgent(null);
 };

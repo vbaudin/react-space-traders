@@ -7,6 +7,7 @@ import EndGame from "./components/EndGame/EndGame";
 import PlayerInfo from "./components/PlayerInfo/PlayerInfo";
 // import { getFleet } from "./api/ship";
 import ContractsInfos from "./components/ContractsInfo/ContractsInfo";
+import FleetInfo from "./components/FleetInfo/FleetInfo";
 
 const App = () => {
   const [token, setToken] = useState(null);
@@ -29,11 +30,15 @@ const App = () => {
     <>
       <EndGame setToken={setToken} />
       {agent && <PlayerInfo agent={JSON.parse(agent)} />}
+      {fleet && (
+        <FleetInfo fleet={fleet} setFleet={setFleet} setAgent={setAgent} />
+      )}
       {contracts && (
         <ContractsInfos
           token={token}
           contracts={JSON.parse(contracts)}
           setContracts={setContracts}
+          setAgent={setAgent}
         />
       )}
     </>

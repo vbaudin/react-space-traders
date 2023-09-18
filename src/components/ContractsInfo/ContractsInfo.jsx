@@ -4,7 +4,7 @@ import ActionButton from "../ActionButton/ActionButton";
 
 const liteFlex = { display: "flex", columnGap: "10px" };
 
-const ContractsInfos = ({ token, contracts, setContracts }) => {
+const ContractsInfos = ({ token, contracts, setContracts, setAgent }) => {
   return (
     <>
       <div>Contracts infos</div>
@@ -25,10 +25,20 @@ const ContractsInfos = ({ token, contracts, setContracts }) => {
                 </div>
                 <div style={liteFlex}>
                   <div>Fulfilled : {contract.fulfilled ? "Yes" : "No"}</div>
-                  {!contract.fulfilled ? (
+                  {!contract.accepted ? (
                     <div>Expiration : {formatingDate(contract.expiration)}</div>
-                  ) : null}
+                  ) : (
+                    <div>
+                      Deadline : {formatingDate(contract.terms.deadline)}
+                    </div>
+                  )}
                 </div>
+              </div>
+              <div>
+                <div>
+                  Payment on accept : {contract.terms.payment.onAccepted}
+                </div>
+                <div></div>
               </div>
               <div style={{ alignSelf: "center" }}>
                 {!contract.accepted ? (
@@ -38,7 +48,11 @@ const ContractsInfos = ({ token, contracts, setContracts }) => {
                       const handleResult = async (token, contract) => {
                         const result = await acceptContract(token, contract.id);
                         if (result) {
-                          updateAcceptedContract(setContracts, contract);
+                          updateAcceptedContract(
+                            setContracts,
+                            setAgent,
+                            contract
+                          );
                         }
                       };
                       handleResult(token, contract);

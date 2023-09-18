@@ -1,6 +1,7 @@
 import axios from "axios";
+import { updateAgentCredits } from "./agent";
 
-export const updateAcceptedContract = (setContracts, contract) => {
+export const updateAcceptedContract = (setContracts, setAgent, contract) => {
   contract.accepted = true;
 
   const storedContracts = JSON.parse(localStorage.getItem("contractsData"));
@@ -15,6 +16,8 @@ export const updateAcceptedContract = (setContracts, contract) => {
     localStorage.setItem("contractsData", JSON.stringify(storedContracts));
 
     setContracts(null);
+
+    updateAgentCredits(setAgent, contract.terms.payment.onAccepted);
   }
 };
 
