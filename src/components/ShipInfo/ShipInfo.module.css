@@ -1,0 +1,14 @@
+.container {
+  min-height: 100px;
+  display: flex;
+  column-gap: 20px;
+}
+
+.image {
+  height: 100px;
+}
+
+.shipAction {
+  display: flex;
+  align-items: center;
+}

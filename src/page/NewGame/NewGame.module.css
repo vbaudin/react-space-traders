@@ -1,0 +1,38 @@
+@keyframes grow {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes shrink {
+  0% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.newGameButton {
+  background: linear-gradient(
+    180deg,
+    #94e733,
+    #36d521 50%,
+    #1ec725 51%,
+    #008e3a
+  );
+  font-weight: bold;
+  border-radius: 5px;
+  font-size: 32px;
+}

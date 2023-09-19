@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  border-radius: 15px;
+  background: #d1dcd9;
+  width: 200px;
+  height: 800px;
+  row-gap: 30px;
+}
+.container div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 10px;
+}
+
+.menuName {
+  font-size: 22px;
+}

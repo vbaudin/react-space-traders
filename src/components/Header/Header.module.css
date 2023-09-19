@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  border-radius: 15px;
+  background: #d1dcd9;
+}
+
+.textContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 20px;
+}
+
+.quitGameButton {
+  background: red;
+  font-weight: bold;
+  border-radius: 5px;
+  font-size: 16px;
+  padding: 5px 10px !important;
+}

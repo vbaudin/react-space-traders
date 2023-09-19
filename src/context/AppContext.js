@@ -1,14 +1,35 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const [token, setToken] = useState(null);
-  const [agent, setAgent] = useState(null);
-  const [fleet, setFleet] = useState(null);
-  const [contracts, setContracts] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [player, setPlayer] = useState(
+    JSON.parse(localStorage.getItem("player"))
+  );
 
-  return <AppContext.Provider>{children}</AppContext.Provider>;
+  useEffect(() => {
+    localStorage.setItem("token", token);
+  }, [token]);
+
+  useEffect(() => {
+    localStorage.setItem("player", JSON.stringify(player));
+    console.log(player);
+  }, [player]);
+
+  const updateToken = (newToken) => {
+    setToken(newToken);
+  };
+
+  const updatePlayer = (updatedPlayer) => {
+    setPlayer(updatedPlayer);
+  };
+
+  return (
+    <AppContext.Provider value={{ token, updateToken, player, updatePlayer }}>
+      {children}
+    </AppContext.Provider>
+  );
 };
 
 export const UseApp = () => {
